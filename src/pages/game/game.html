@@ -1,0 +1,40 @@
+<ion-header>
+  <!--<ion-navbar>-->
+  <ion-navbar no-border-bottom>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title><span *ngIf="selectedCity || gameStarted">  {{selectedCity}}</span></ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top> <!-- https://github.com/driftyco/ionic/issues/7706 -->
+    <ion-segment [(ngModel)]="gameTabs" color="secondary">
+      <ion-segment-button value="inventory">
+        Inventory
+      </ion-segment-button>
+      <ion-segment-button value="finances">
+        Finances
+      </ion-segment-button>
+      <ion-segment-button value="upgrades">
+        Upgrades
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="action-sheets-basic-page outer-content">
+
+  <cmp-shopping *ngIf="gameStarted && shopping"></cmp-shopping>
+
+  <div [ngSwitch]="gameTabs">
+    <ion-list *ngSwitchCase="'inventory'">
+      <cmp-inventory></cmp-inventory>
+    </ion-list>
+    <ion-list *ngSwitchCase="'finances'">
+      <cmp-finances>inventory></cmp-finances>
+    </ion-list>
+    <ion-list *ngSwitchCase="'upgrades'">
+    </ion-list>
+  </div>
+
+</ion-content>

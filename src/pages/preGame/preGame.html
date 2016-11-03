@@ -1,0 +1,19 @@
+<ion-header>
+  <!--<ion-navbar>-->
+  <ion-navbar no-border-bottom>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title><span *ngIf="!gameStarted">New Game </span><span *ngIf="selectedCity || gameStarted">  {{selectedCity}}</span></ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="action-sheets-basic-page outer-content">
+
+  <cmp-saveSlot *ngIf="!saveSlot"></cmp-saveSlot>
+
+  <cmp-citySelector *ngIf="saveSlot && !selectedCity && !gameStarted"></cmp-citySelector>
+
+  <cmp-shopSelector *ngIf="saveSlot && selectedCity && !gameStarted"></cmp-shopSelector>
+
+</ion-content>

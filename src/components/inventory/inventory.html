@@ -1,0 +1,103 @@
+<ion-list-header>
+  Balance
+</ion-list-header>
+<ion-item>
+  <ion-icon name="leaf" item-left></ion-icon>
+  Herbology
+  <ion-note item-right>
+      To the moon
+      </ion-note>
+</ion-item>
+<ion-item-divider>
+  Item Divider
+</ion-item-divider>
+<!--<ion-item>
+  Product 1
+  <ion-buttons text-center item-right>
+    <button ion-button>12</button>
+    <button ion-button>24</button>
+    <button ion-button>48</button>
+  </ion-buttons>
+</ion-item>-->
+
+<ion-item *ngFor="let product of products">
+  {{product.name}} - {{product.amount}}
+  <ion-buttons text-center item-right>
+    <button ion-button (click)="calcMoneyToSpend(12,product)">12</button>
+    <button ion-button (click)="calcMoneyToSpend(24,product)">24</button>
+    <button ion-button (click)="calcMoneyToSpend(48,product)">48</button>
+  </ion-buttons>
+</ion-item>
+
+<ion-item>
+  <ion-toggle checked="false"></ion-toggle>
+      <ion-label>
+        Muggle Studies
+      </ion-label>
+      <ion-icon name='body' item-left></ion-icon>
+</ion-item>
+
+
+<!--<ion-item>
+  <h2>Drinks</h2>
+  <span clear item-right>200,-</span>
+</ion-item>
+<ion-item>
+  <h2>magazines / newspapers</h2>
+</ion-item>
+<ion-item>
+  <h2>Beer</h2>
+</ion-item>
+<ion-item>
+  <h2>juice</h2>
+</ion-item>-->
+
+
+<ion-list>
+
+  <ion-list-header>
+    Shopping
+  </ion-list-header>
+
+  <ion-item>
+    Item
+  </ion-item>
+
+  <ion-item detail-push>
+    Item with Detail Arrow
+  </ion-item>
+
+  <button ion-item (click)="buttonClick()">
+    Button Item
+  </button>
+
+  <ion-item-divider>
+    Item Divider
+  </ion-item-divider>
+
+  <button ion-item detail-none (click)="buttonClick()">
+    Button Item with no Detail Arrow
+  </button>
+
+  <a ion-item href="https://www.ionicframework.com">
+    Anchor Item
+  </a>
+
+  <ion-item no-lines>
+    Item with no border
+  </ion-item>
+
+  <ion-item text-wrap>
+    Multiline text that should wrap when it is too long
+    to fit on one line in the item.
+  </ion-item>
+
+</ion-list>
+
+
+<ion-list>
+  <ion-item>
+    <h2></h2>
+    <p></p>
+  </ion-item>
+</ion-list>

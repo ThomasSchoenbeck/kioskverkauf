@@ -1,0 +1,42 @@
+<!--<ion-card>
+  <ion-card-header>
+    {{shopHeadline}}
+  </ion-card-header>
+  <ion-card-content>
+    {{shopText}}
+  </ion-card-content>
+    <ion-row no-padding>
+      <ion-col text-right>
+        <button ion-button clear color="primary" icon-left (click)="gameStart()">
+          <ion-icon name="key"></ion-icon>
+          Start
+        </button>
+      </ion-col>
+    </ion-row>
+</ion-card>-->
+
+
+
+
+  <ion-slides pager [options]="mySlideOptions">
+    <ion-slide *ngFor="let slide of slides">
+      <ion-toolbar>
+        <ion-buttons end>
+          <button ion-button (click)="continue()">Skip</button>
+        </ion-buttons>
+      </ion-toolbar>
+      <img [src]="slide.image" class="slide-image"/>
+      <h2 class="slide-title" [innerHTML]="slide.title"></h2>
+      <p [innerHTML]="slide.description"></p>
+    </ion-slide>
+    <ion-slide>
+      <ion-toolbar>
+      </ion-toolbar>
+      <img src="../assets/image/ica-slidebox-img-4.png" class="slide-image"/>
+      <h2 class="slide-title">Ready to Play?</h2>
+      <button ion-button large clear icon-right (click)="continue()">
+        Continue
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-slide>
+  </ion-slides>
