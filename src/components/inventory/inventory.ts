@@ -44,7 +44,7 @@ export class InventoryComponent implements OnInit {
 
   calcMoneyToSpend(amount, product: Product) {
     let price = amount * product.price_buy; 
-    console.log(`Inventory: checkout(): old amount: ${product.amount}, new amount: ${product.amount + amount}, price: price`)
+    console.log(`Inventory: checkout(): for product: ${product.name}, old amount: ${product.amount}, new amount: ${product.amount + amount}, price: ${price}`)
     this.checkoutValue.push({productId: product.id, amount: amount, price: price});
   }
 
@@ -60,7 +60,7 @@ export class InventoryComponent implements OnInit {
         data2.id === data.id;
       });
 
-      this.products[productIndex].amount = data.amount;
+      this.products[productIndex].amount = data.amount; // set amount of products in the template
 
       this.productInventoryIds.push(data.id);
     });
@@ -68,6 +68,7 @@ export class InventoryComponent implements OnInit {
 
   loadMoneyFromSavegame() {
     this.money = this.savegameProvider.savegame.inventory;
+    console.log(`Inventory: loadMoneyFromSavegame(): money: ${this.money}`);
   }
 
   checkout() {
@@ -76,7 +77,9 @@ export class InventoryComponent implements OnInit {
       moneyToSpend = moneyToSpend + data.price;
       let productIndex = this.productInventoryIds.indexOf(data.productId); 
       if (productIndex > -1) {
-        this.productInventory[productIndex].amount = data.amount;
+        this.productInventory[productIndex].amount = this.productInventory[productIndex].amount + data.amount;
+        this.products[productIndex].amount = this.products[productIndex].amount + data.amount;
+        console.log(`Inventory: checkout(): adding amount(${data.amount}) after buy for ${this.products[productIndex].name}(${this.products[productIndex].id})/${this.productInventory[productIndex].id} `)
       }
     });
 

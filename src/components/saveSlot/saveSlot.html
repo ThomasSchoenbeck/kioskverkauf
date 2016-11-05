@@ -35,7 +35,7 @@
   </ion-card-header>
 
   <ion-list>
-<button ion-item *ngFor="let slot of slots" (click)="selectSaveSlot(slot.value)">
+<button ion-item *ngFor="let slot of slots" (click)="selectSaveSlot(slot)">
   <h2>{{slot.name}}</h2>
   <p *ngIf="!slot.city">&lt; no Game &gt;</p>
   <p *ngIf="slot.city">City: {{slot.city}}, Shop: {{slot.shop}}, Money: {{slot.money}}</p>
