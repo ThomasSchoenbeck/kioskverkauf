@@ -44,26 +44,34 @@ export class InventoryComponent implements OnInit {
 
   calcMoneyToSpend(amount, product: Product) {
     let price = amount * product.price_buy; 
-    console.log(`Inventory: checkout(): for product: ${product.name}, old amount: ${product.amount}, new amount: ${product.amount + amount}, price: ${price}`)
+    console.log(`Inventory: calcMoneyToSpend(): for product: ${product.name}, old amount: ${product.amount}, new amount: ${product.amount + amount}, price: ${price}`)
     this.checkoutValue.push({productId: product.id, amount: amount, price: price});
+    console.log(this.checkoutValue);
   }
 
   loadInventoryFromSavegame() {
-    this.productInventory = this.savegameProvider.savegame.inventory;
-    let productIndex;
+    try {
+      console.log(`Inventory: accessing savegame from provider: ${JSON.stringify(this.savegameProvider.savegame)}`);
+      this.productInventory = this.savegameProvider.savegame.inventory;
+      let productIndex;
 
 
-    this.productInventory.forEach(data => {
-      // productIndex = this.products.indexOf(data.id); 
-      //http://jsfiddle.net/gJPHw/
-      productIndex = this.products.filter(data2 => {
-        data2.id === data.id;
+      this.productInventory.forEach(data => {
+        // productIndex = this.products.indexOf(data.id); 
+        //http://jsfiddle.net/gJPHw/
+        productIndex = this.products.filter(data2 => {
+          data2.id === data.id;
+        });
+
+        this.products[productIndex].amount = data.amount; // set amount of products in the template
+
+        this.productInventoryIds.push(data.id);
       });
-
-      this.products[productIndex].amount = data.amount; // set amount of products in the template
-
-      this.productInventoryIds.push(data.id);
-    });
+    } catch(error) {
+      console.log(`Inventory: cannot load inventory from savegame, it is empty. Probably new savegame!`);
+      console.log(`Inventory: setting empty!`);
+      
+    }
   } //how to save current Amount of dynamic Product list? create array?
 
   loadMoneyFromSavegame() {

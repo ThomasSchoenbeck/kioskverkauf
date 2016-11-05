@@ -22,8 +22,8 @@ export class PreGamePage implements OnInit {
   constructor(public navCtrl: NavController, public events: Events, private settingsProvider: SettingsProvider) {
 
     this.events.subscribe('saveSlot:selected', (eventData) => {
-      console.log(`PreGamePage: Saveslot has been selected! ${eventData}`);
-      this.saveSlot = eventData;
+      console.log(`PreGamePage: Saveslot ${eventData[0].value} has been selected! ${JSON.stringify(eventData)}`);
+      this.saveSlot = eventData[0].value;
     });
 
     this.events.subscribe('city:selected', (eventData) => {
@@ -37,9 +37,9 @@ export class PreGamePage implements OnInit {
     });
 
     this.events.subscribe('shop:selected', (eventData) => {
-      console.log(`PreGamePage: Shop has been selected!`);
+      console.log(`PreGamePage: Shop has been selected! ${JSON.stringify(eventData)}`);
 
-      this.selectedShop = eventData;
+      this.selectedShop = eventData[0].shopHeadline;
 
       this.goToGamePage();
       
@@ -61,6 +61,7 @@ export class PreGamePage implements OnInit {
   }
 
   goToGamePage() {
+    console.log(`PreGamePage: goToGamePage(): selectedCity: ${this.selectedCity}, selectedShop: ${this.selectedShop}, saveSlot: ${this.saveSlot}`);
     this.navCtrl.push(GamePage, {
       selectedCity: this.selectedCity,
       selectedShop: this.selectedShop,

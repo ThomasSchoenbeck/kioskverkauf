@@ -48,13 +48,13 @@ export class SaveSlotComponent implements AfterViewInit {
   }
 
   selectSaveSlot(slot) {
-    if (slot.filled) {
-      this.selectedSaveSlot = slot.value;
-      console.log(`select save slot: ${this.selectedSaveSlot}`);
-      this.events.publish('saveSlot:selected', this.selectedSaveSlot);
-    } else {
-      console.log(`saveSlot: Slot is empty. Do nothing!`);
-    }
+    // if (slot.filled) {
+      // this.selectedSaveSlot = slot.value;
+      console.log(`saveSlot: select save slot: ${slot.value}: ${JSON.stringify(slot)}`);
+      this.events.publish('saveSlot:selected', slot);
+    // } else {
+    //   console.log(`saveSlot: Slot ${slot.value} is empty. Do nothing!`);
+    // }
   }
 
   ngAfterViewInit() {

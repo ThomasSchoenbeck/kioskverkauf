@@ -29,8 +29,8 @@ export class SavegameProvider {
     });
   }
 
-  setSavegame(slot, savegame): void {
-    this.storage.set('savegame' + slot, savegame).then(() => {
+  setSavegame(slot, savegame): Promise<void> {
+    return this.storage.set('savegame' + slot, savegame).then(() => {
       console.log(`SET: Savegme from slot ${slot} is saved: ${savegame}`);
       this.savegame = savegame;
     });

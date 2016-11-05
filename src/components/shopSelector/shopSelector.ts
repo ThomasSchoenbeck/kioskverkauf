@@ -44,8 +44,10 @@ export class ShopSelectorComponent {
   }
 
   gameStart() {
-    console.log('CitySelectorComponent: Select clicked');
-    this.events.publish('shop:selected', { shopHeadline: this.shopHeadline, shopText: this.shopText, shopImage: this.shopImage} );
+    console.log('ShopSelectorComponent: Select clicked');
+    let shop = { shopHeadline: this.shopHeadline, shopText: this.shopText, shopImage: this.shopImage};
+    console.log(`ShopSelectorComponent: shop: ${JSON.stringify(shop)}`);
+    this.events.publish('shop:selected', shop);
   }
 
   shopHeadlinePossibilities = [
@@ -116,7 +118,8 @@ export class ShopSelectorComponent {
   ];
 
   continue() {
-    this.events.publish('shop:selected', true);
+    this.gameStart();
+    // this.events.publish('shop:selected', true);
   }
 
 
