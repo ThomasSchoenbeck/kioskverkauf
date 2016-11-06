@@ -19,21 +19,27 @@ export class LoadGamePage {
 
   constructor(public navCtrl: NavController, public events: Events, private savegameProvider: SavegameProvider) {
 
-    this.events.subscribe('saveSlot:selected', (slot) => {
+    this.events.subscribe('saveSlot:selected', slot => {
       if (slot[0].filled) {
-        console.log(`LoadGamePage: Saveslot ${slot.value} has been selected!`);
+        console.log(`LoadGamePage: Saveslot ${slot[0].value} has been selected!`);
         this.saveSlot = slot[0].value;
         this.selectedCity = slot[0].city;
         this.selectedShop = slot[0].shop;
-        // this.loadSaveGame().then(() => {
-          this.goToGamePage();
-        // })
+
+
+        this.savegameProvider.activateSavegame(slot[0].value).then( () => {
+          // success
+          console.log(`LoadGamePage: subscribing to activate save game.`);
+          this.goToGamePage()
+        });
+
       } else {
         console.log(`LoadGamePage: Slot ${slot[0].value} is empty. Do nothing!`);
       }
     });
 
   }
+
 
   // loadSaveGame():Promise<boolean> {
   //   return this.savegameProvider.getSavegame(this.saveSlot).then(data => {

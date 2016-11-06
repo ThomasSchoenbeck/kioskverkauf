@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
-// import { Observable } from 'rxjs/Observable';
+
+// import {Observable} from 'rxjs/Rx'
 
 import { Savegame } from '../models/savegame';
 
@@ -24,9 +25,19 @@ export class SavegameProvider {
   getSavegame(slot): Promise<Savegame> {
     return this.storage.get('savegame' + slot).then((savegame) => {
       console.log(`GET: Savegame from slot ${slot}: ${savegame}`);
-      this.savegame = savegame;
+      // this.savegame = savegame;
       return savegame;
     });
+  }
+
+  activateSavegame(slot): Promise<any> {
+    return this.storage.get('savegame' + slot).then((savegame) => {
+      console.log(`ACTIVATE: Savegame from slot ${slot}: ${savegame}`);
+      this.savegame = savegame;
+      // return savegame;^
+      return true;
+    });
+    
   }
 
   setSavegame(slot, savegame): Promise<void> {

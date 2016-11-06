@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { AlertController, Events } from 'ionic-angular';
 
 import { Product } from '../../models/products';
 import { ProductInventory } from '../../models/productInventory';
@@ -13,20 +15,20 @@ import { SavegameProvider } from '../../providers/savegame';
 })
 export class InventoryComponent implements OnInit {
 
-  public productInventory: ProductInventory[];
-  private productInventoryIds: number[];
-  private checkoutValue: any;
-  private money: number;
+  public productInventory: ProductInventory[] = [];
+  private productInventoryIds: number[] = [];
+  private productInCheckout: number[] = [];
+  private checkoutValue: any = [];
+  private money: number = 0;
+  private moneyToSpend: number = 0;
+  @Input() isLoadedSavegame: boolean;
+  @Input() inventory: ProductInventory[];
+  @Input() moneyFromCurrentGame: number;
 
-  constructor(private savegameProvider: SavegameProvider) { }
+  constructor(private savegameProvider: SavegameProvider, public events: Events, private alertCtrl: AlertController) { }
 
-//  heroes = [
-//     new Hero(1, 'Windstorm'),
-//     new Hero(13, 'Bombasto'),
-//     new Hero(15, 'Magneta'),
-//     new Hero(20, 'Tornado')
-//   ];
-
+  // some products can only be bought and sold when a specific upgrade is available
+  // [locked, unlocked] attribute for the products that need first a upgrade to unlock them
   products = [
     new Product( 1, 'Saft', 0.80, 1.00, 0 ),
     new Product( 2, 'Sprudel/Wasser', 0.70, 0.90, 0),
@@ -43,10 +45,47 @@ export class InventoryComponent implements OnInit {
   ]
 
   calcMoneyToSpend(amount, product: Product) {
-    let price = amount * product.price_buy; 
+    let price: number = amount * product.price_buy; 
     console.log(`Inventory: calcMoneyToSpend(): for product: ${product.name}, old amount: ${product.amount}, new amount: ${product.amount + amount}, price: ${price}`)
-    this.checkoutValue.push({productId: product.id, amount: amount, price: price});
+    let index = this.productInCheckout.indexOf(product.id);
+    if (index > -1) {
+      console.log(`Inventory: calcMoneyToSpend(): product(${product.id}) already in the array.`);
+      this.checkoutValue[index].amount = +this.checkoutValue[index].amount + amount; 
+      this.checkoutValue[index].price = Math.round((+this.checkoutValue[index].price + price) * 100) / 100; 
+    } else {
+      this.productInCheckout.push(product.id);
+      this.checkoutValue.push({productId: product.id, amount: amount, price: price});
+    }
+
+    console.log(this.productInventoryIds);
+    index = this.productInventoryIds.indexOf(product.id);
+    if (index == -1) {
+      console.log(`Inventory: calcMoneyToSpend(): index of productInventoryIds = ${index}`);
+
+      let productIndex;
+
+      for (let i=this.products.length; i--; ) {
+        console.log(`i(${i}) = id: ${this.products[i].id} compared to product.id(${product.id})`);
+        if (this.products[i].id === product.id) {
+          productIndex = i;
+          break;
+        }
+      }
+
+      // productIndex = this.products.filter(value => {
+      //   console.log(`filter products: compare id ${value.id} to ${product.id}`);
+      //   value.id === product.id;
+      // });
+
+      console.log(`index in products is ${productIndex}`);
+  
+      this.productInventoryIds[productIndex] = product.id;
+
+    }
+
     console.log(this.checkoutValue);
+    console.log(`Inventory: calcMoneyToSpend(): moneyToSpend: ${this.moneyToSpend} + price: ${price}`);
+    this.moneyToSpend = Math.round((this.moneyToSpend + price) * 100) / 100;
   }
 
   loadInventoryFromSavegame() {
@@ -63,6 +102,7 @@ export class InventoryComponent implements OnInit {
           data2.id === data.id;
         });
 
+        // console.log(``);
         this.products[productIndex].amount = data.amount; // set amount of products in the template
 
         this.productInventoryIds.push(data.id);
@@ -70,34 +110,128 @@ export class InventoryComponent implements OnInit {
     } catch(error) {
       console.log(`Inventory: cannot load inventory from savegame, it is empty. Probably new savegame!`);
       console.log(`Inventory: setting empty!`);
-      
+      this.productInventory = [];
     }
   } //how to save current Amount of dynamic Product list? create array?
 
   loadMoneyFromSavegame() {
-    this.money = this.savegameProvider.savegame.inventory;
+    this.money = this.savegameProvider.savegame.money;
     console.log(`Inventory: loadMoneyFromSavegame(): money: ${this.money}`);
   }
 
-  checkout() {
-    let moneyToSpend: number;
-    this.checkoutValue.forEach(data => {
-      moneyToSpend = moneyToSpend + data.price;
-      let productIndex = this.productInventoryIds.indexOf(data.productId); 
-      if (productIndex > -1) {
-        this.productInventory[productIndex].amount = this.productInventory[productIndex].amount + data.amount;
-        this.products[productIndex].amount = this.products[productIndex].amount + data.amount;
-        console.log(`Inventory: checkout(): adding amount(${data.amount}) after buy for ${this.products[productIndex].name}(${this.products[productIndex].id})/${this.productInventory[productIndex].id} `)
-      }
-    });
+  loadInventoryFromCurrentGame() {
+    console.log(`Inventory: loadInventoryFromCurrentGame()`);
+    console.log(this.inventory);
 
-    console.log(`Inventory: checkout(): spending ${moneyToSpend} from ${this.money} = ${this.money - moneyToSpend}`);
-    this.money = this.money - moneyToSpend;
+    this.productInventory = this.inventory;
+    let productIndex;
+    this.productInventory.forEach(data => {
+      for (let i=this.products.length; i--; ) {
+        console.log(`i(${i}) = id: ${this.products[i].id} compared to product.id(${data.id})`);
+        if (this.products[i].id === data.id) {
+          productIndex = i;
+          break;
+        }
+      }
+
+      console.log(`productIndex = ${productIndex}, this.products: ${JSON.stringify(this.products)}`);
+
+      this.products[productIndex].amount = data.amount;
+      this.productInventoryIds.push(data.id);
+    });
+  }
+
+  loadMoneyFromCurrentGame() {
+    this.money = this.moneyFromCurrentGame;
+    console.log(`Inventory: loadMoneyFromCurrentGame(): money: ${this.money}`);
+  }
+
+  resetCheckout() {
+    this.checkoutValue = [];
+    this.moneyToSpend = 0;
+    this.productInCheckout = [];
+  }
+
+
+  checkout() {
+    if (this.checkoutValue.length != 0) {
+      this.checkoutValue.forEach(data => {
+        // this.moneyToSpend = this.moneyToSpend + data.price;
+        console.log(this.productInventoryIds);
+        let productIndex = this.productInventoryIds.indexOf(data.productId); 
+        console.log(`Inventory: checkout(): data.productId: ${data.productId} productIndex: ${productIndex}, checkoutValue: ${JSON.stringify(data)}`);
+        if (productIndex > -1) {
+          if (this.productInventory[productIndex] != undefined && this.productInventory[productIndex].id == data.productId) {
+            console.log(`Inventory: checkout(): product found in savegame inventory.`);
+            this.productInventory[productIndex].amount = this.productInventory[productIndex].amount + data.amount;
+          } else {
+            console.log(`Inventory: checkout(): product not in savegame inventory. pushing (${data.productId}|${data.amount})`);
+            console.log(this.productInventory);
+            this.productInventory.push({ id: data.productId, amount: data.amount});
+            console.log(`pushed!`);
+          }
+          this.products[productIndex].amount = this.products[productIndex].amount + data.amount;
+          console.log(`Inventory: checkout(): adding amount(${data.amount}) after buy for ${this.products[productIndex].name}(${this.products[productIndex].id})/${data.productId}`);
+        }
+      });
+
+      console.log(`Inventory: checkout(): spending ${this.moneyToSpend} from ${this.money} = ${this.money - this.moneyToSpend}`);
+      this.money = Math.round((this.money - this.moneyToSpend) * 100) / 100;
+
+      // this.checkoutValue = [];
+      // this.moneyToSpend = 0;
+      // this.productInCheckout = [];
+      this.resetCheckout();
+
+      this.saveProgress();
+
+    } else {
+      console.log(`Inventory: checkout(): nothing to buy selected.`);
+    }
+  }
+
+  saveProgress() {
+    this.events.publish('inventory:changed', {inventory: this.productInventory, money: this.money});
+    // this.savegameProvider.setSavegame().then();
+  }
+
+  confirmBuying() {
+    if (this.checkoutValue.length != 0) {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm purchase',
+      message: 'Do you want to buy?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Buy',
+          handler: () => {
+            console.log('Buy clicked');
+            this.checkout();
+          }
+        }
+      ]
+    });
+    alert.present();
+    } else {
+      console.log(`Alert not shown. Nothing selected.`);
+    }
   }
 
   ngOnInit() {
-    this.loadInventoryFromSavegame();
-    this.loadMoneyFromSavegame();
+    console.log(`Inventory: ngOnInit()`);
+    if (this.isLoadedSavegame) {
+      this.loadInventoryFromSavegame();
+      this.loadMoneyFromSavegame();
+    } else {
+      this.loadInventoryFromCurrentGame();
+      this.loadMoneyFromCurrentGame();
+    }
   }
 
 }

@@ -28,7 +28,7 @@
 
   <div [ngSwitch]="gameTabs">
     <ion-list *ngSwitchCase="'inventory'">
-      <cmp-inventory></cmp-inventory>
+      <cmp-inventory [isLoadedSavegame]="isLoadedSavegame" [inventory]="inventory" [moneyFromCurrentGame]="money"></cmp-inventory>
     </ion-list>
     <ion-list *ngSwitchCase="'finances'">
       <cmp-finances>inventory></cmp-finances>
