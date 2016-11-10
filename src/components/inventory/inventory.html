@@ -1,19 +1,17 @@
 
   <ion-list-header>
     Balance
+    <div item-content>
+      {{money}}
+    </div>
   </ion-list-header>
-
-  <ion-item-divider>
-    {{money}}
-  </ion-item-divider>
-
 
   <ion-item *ngFor="let product of products">
     {{product.name}} - {{product.amount}}
     <ion-buttons text-center item-right>
-      <button ion-button (click)="calcMoneyToSpend(12,product)">12</button>
-      <button ion-button (click)="calcMoneyToSpend(24,product)">24</button>
-      <button ion-button (click)="calcMoneyToSpend(48,product)">48</button>
+      <button ion-button small (click)="calcMoneyToSpend(12,product)">12</button>
+      <button ion-button small (click)="calcMoneyToSpend(24,product)">24</button>
+      <button ion-button small (click)="calcMoneyToSpend(48,product)">48</button>
     </ion-buttons>
   </ion-item>
 

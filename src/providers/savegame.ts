@@ -37,7 +37,12 @@ export class SavegameProvider {
       // return savegame;^
       return true;
     });
-    
+  }
+
+  removeSavegame(slot): Promise<void> {
+    return this.storage.remove('savegame' + slot).then(() => {
+      console.log(`REMOVE: Savegme from slot ${slot} is deleted`);
+    });
   }
 
   setSavegame(slot, savegame): Promise<void> {

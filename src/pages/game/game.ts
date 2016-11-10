@@ -35,6 +35,10 @@ export class GamePage implements OnInit, AfterViewInit {
     this.selectedShop = navParams.get('selectedShop').toString();
     this.saveSlot = navParams.get('saveSlot').toString();
     this.isLoadedSavegame = navParams.get('isLoadedSavegame');
+    this.money = navParams.get('money');
+    this.inventory = navParams.get('inventory');
+
+    console.log(`GamePage: isLoadedSavegame: ${this.isLoadedSavegame}, money: ${this.money}, inventory: ${this.inventory}`);
 
     this.events.subscribe('inventory:changed', (eventData) => {
       console.log(`GamePage: Inventory has changed! ${JSON.stringify(eventData)}`);

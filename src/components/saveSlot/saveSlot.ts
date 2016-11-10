@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 
-import { Events } from 'ionic-angular';
+import { AlertController, Events } from 'ionic-angular';
 
 import { Savegame } from '../../models/savegame';
 import { SavegameProvider } from '../../providers/savegame';
@@ -15,7 +15,7 @@ export class SaveSlotComponent implements AfterViewInit {
   private selectedSaveSlot: string;
   private savegames: Savegame[] = [];
 
-  constructor(public events: Events, private savegameProvider: SavegameProvider) { }
+  constructor(public events: Events, private savegameProvider: SavegameProvider, private alertCtrl: AlertController) { }
 
   slots = [
     { id: 0, filled: false, name: 'SLOT A', value: 'A', city: undefined, shop: undefined, money: undefined},
@@ -47,6 +47,19 @@ export class SaveSlotComponent implements AfterViewInit {
 
   }
 
+  clearSlot(value) {
+    this.savegameProvider.removeSavegame(value).then( () => {
+      for (let i = this.slots.length; i--;) {
+        if (this.slots[i].value == value) {
+          this.slots[i].city = '';
+          this.slots[i].shop = '';
+          this.slots[i].money = '';
+          this.slots[i].filled = false;
+        }
+      }
+    });
+  }
+
   selectSaveSlot(slot) {
     // if (slot.filled) {
       // this.selectedSaveSlot = slot.value;
@@ -55,6 +68,30 @@ export class SaveSlotComponent implements AfterViewInit {
     // } else {
     //   console.log(`saveSlot: Slot ${slot.value} is empty. Do nothing!`);
     // }
+  }
+
+  confirmDeletingSave(value) {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm removal',
+      message: 'Do you want to delete the Savegame from Slot ' + value + ' ?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('savesSlot: confirmDeletingSave: Cancel clicked');
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            console.log('savesSlot: confirmDeletingSave: Delete clicked');
+            this.clearSlot(value);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   ngAfterViewInit() {

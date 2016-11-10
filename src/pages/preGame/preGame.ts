@@ -35,7 +35,6 @@ export class PreGamePage implements OnInit {
       // this.selectedCity = eventData[0];
       // console.log(eventData);
       this.selectedCity = eventData;
-      (this.hideGameIntro == true) ? this.goToGamePage() : console.log(`showing intro`);
       //i still need to fill the shop without the event
     });
 
@@ -43,6 +42,7 @@ export class PreGamePage implements OnInit {
       console.log(`PreGamePage: Shop has been selected! ${JSON.stringify(eventData)}`);
 
       this.selectedShop = eventData[0].shopHeadline;
+      // (this.hideGameIntro == true) ? this.goToGamePage() : console.log(`showing intro`);
 
       this.createSaveGame().then(() => {
         this.goToGamePage();
@@ -69,7 +69,7 @@ export class PreGamePage implements OnInit {
   createSaveGame(): Promise<boolean> {
     console.log(`PreGamePage: creating savegame. City: ${this.selectedCity}, Shop: ${this.selectedShop}, Slot: ${this.saveSlot}`);
     //slot, city, shop, buildings, round, money, inventory, upgrades
-    return this.savegameProvider.setSavegame(this.saveSlot, new Savegame(this.saveSlot, this.selectedCity, this.selectedShop, '', 0, 10000, {}, '')).then(() => {
+    return this.savegameProvider.setSavegame(this.saveSlot, new Savegame(this.saveSlot, this.selectedCity, this.selectedShop, '', 0, 10000, [], '')).then(() => {
         console.log(`PreGamePage: savegame created!`);
       });
   }
@@ -80,6 +80,8 @@ export class PreGamePage implements OnInit {
       selectedCity: this.selectedCity,
       selectedShop: this.selectedShop,
       saveSlot: this.saveSlot,
+      money: 10000,
+      inventory: [],
       isLoadedSavegame: false
     });
   }

@@ -31,7 +31,7 @@
       <cmp-inventory [isLoadedSavegame]="isLoadedSavegame" [inventory]="inventory" [moneyFromCurrentGame]="money"></cmp-inventory>
     </ion-list>
     <ion-list *ngSwitchCase="'finances'">
-      <cmp-finances>inventory></cmp-finances>
+      <cmp-finances [money]="money">inventory></cmp-finances>
     </ion-list>
     <ion-list *ngSwitchCase="'upgrades'">
     </ion-list>
