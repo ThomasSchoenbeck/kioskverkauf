@@ -23,12 +23,12 @@ $background-color:  #fff;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #387ef5,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222,
-  favorite:   #69BB7B
+  primary:    #387ef5, //ionic blue
+  secondary:  #32db64, //ionic green
+  danger:     #f53d3d, //ionic red
+  light:      #f4f4f4, //ionic gray
+  dark:       #222,    //ionic black
+  favorite:   #69BB7B  //ionic light green
 );
 
 

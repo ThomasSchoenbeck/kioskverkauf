@@ -1,13 +1,11 @@
 <ion-header>
   <!--<ion-navbar>-->
   <ion-navbar no-border-bottom>
-    <button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title><span *ngIf="selectedCity || gameStarted">  {{selectedCity}}</span></ion-title>
+    <button ion-button round color="success" item-right (click)="endRound()">End Round</button>
   </ion-navbar>
 
-  <ion-toolbar no-border-top> <!-- https://github.com/driftyco/ionic/issues/7706 -->
+  <ion-toolbar no-border-top *ngIf="!roundEnd"> <!-- https://github.com/driftyco/ionic/issues/7706 -->
     <ion-segment [(ngModel)]="gameTabs" color="secondary">
       <ion-segment-button value="inventory">
         Inventory
@@ -26,15 +24,17 @@
 
   <cmp-shopping *ngIf="gameStarted && shopping"></cmp-shopping>
 
-  <div [ngSwitch]="gameTabs">
+  <div [ngSwitch]="gameTabs" *ngIf="!roundEnd">
     <ion-list *ngSwitchCase="'inventory'">
       <cmp-inventory [isLoadedSavegame]="isLoadedSavegame" [inventory]="inventory" [moneyFromCurrentGame]="money"></cmp-inventory>
     </ion-list>
     <ion-list *ngSwitchCase="'finances'">
-      <cmp-finances [money]="money">inventory></cmp-finances>
+      <cmp-finances [costs]="roundCosts" [money]="money">inventory></cmp-finances>
     </ion-list>
     <ion-list *ngSwitchCase="'upgrades'">
     </ion-list>
   </div>
+
+  <cmp-roundSummary *ngIf="roundEnd"></cmp-roundSummary>
 
 </ion-content>

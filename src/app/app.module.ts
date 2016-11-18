@@ -22,6 +22,7 @@ import { ActionsComponent } from '../components/actions/actions';
 import { InventoryComponent } from '../components/inventory/inventory';
 import { FinancesComponent } from '../components/finances/finances';
 import { SaveSlotComponent } from '../components/saveSlot/saveSlot'
+import { RoundSummaryComponent } from '../components/roundSummary/roundSummary';
 
 import { SettingsProvider } from '../providers/settings';
 import { SavegameProvider } from '../providers/savegame';
@@ -45,7 +46,8 @@ import { SavegameProvider } from '../providers/savegame';
     ActionsComponent,
     InventoryComponent,
     FinancesComponent,
-    SaveSlotComponent
+    SaveSlotComponent,
+    RoundSummaryComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -69,7 +71,8 @@ import { SavegameProvider } from '../providers/savegame';
     ActionsComponent,
     InventoryComponent,
     FinancesComponent,
-    SaveSlotComponent
+    SaveSlotComponent,
+    RoundSummaryComponent
   ],
   providers: [ ActionSheetComponent, Storage, SettingsProvider, SavegameProvider ]
 })

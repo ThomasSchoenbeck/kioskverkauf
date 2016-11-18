@@ -22,11 +22,13 @@ export class GamePage implements OnInit, AfterViewInit {
   private shopping: boolean = false;
   // private savegame: Savegame;
   private gameRound: number;
+  private roundEnd: boolean;
 
   // properties from InventoryComponent
   private isLoadedSavegame: boolean;
   private inventory: ProductInventory[];
   private money: number;
+  private roundCosts: number;
 
   private gameTabs: string = "inventory";
 
@@ -44,6 +46,7 @@ export class GamePage implements OnInit, AfterViewInit {
       console.log(`GamePage: Inventory has changed! ${JSON.stringify(eventData)}`);
       this.inventory = eventData[0].inventory;
       this.money = eventData[0].money;
+      this.roundCosts = this.roundCosts + eventData[0].moneyToSpend;
       this.isLoadedSavegame = false;
     });
 
@@ -85,6 +88,17 @@ export class GamePage implements OnInit, AfterViewInit {
       console.log(`GamePage: Page has been removed form navStack: ${event}`);
       console.log(event);
     }); // does not work well
+  }
+
+  endRound() {
+    console.log(`GamePage: endRound()`);
+    // calc sellings
+
+    //increase round number
+    this.gameRound = this.gameRound + 1;
+
+    // set boolean for showing roundSummary component
+    this.roundEnd = true;
   }
 
   ngOnInit() {

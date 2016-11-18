@@ -156,9 +156,29 @@ export class InventoryComponent implements OnInit {
   }
 
   resetCheckout() {
-    this.checkoutValue = [];
-    this.moneyToSpend = 0;
-    this.productInCheckout = [];
+     let alert = this.alertCtrl.create({
+      title: 'Delete shopping cart?',
+      message: 'Do you really want to empty your shopping cart again?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Empty',
+          handler: () => {
+            console.log('Empty clicked');
+            this.checkoutValue = [];
+            this.moneyToSpend = 0;
+            this.productInCheckout = [];
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 
@@ -203,7 +223,7 @@ export class InventoryComponent implements OnInit {
   }
 
   saveProgress() {
-    this.events.publish('inventory:changed', {inventory: this.productInventory, money: this.money});
+    this.events.publish('inventory:changed', {inventory: this.productInventory, money: this.money, moneyToSpend: this.moneyToSpend});
     // this.savegameProvider.setSavegame().then();
   }
 
