@@ -28,7 +28,7 @@ export class GamePage implements OnInit, AfterViewInit {
   private isLoadedSavegame: boolean;
   private inventory: ProductInventory[];
   private money: number;
-  private roundCosts: number;
+  private roundCosts: number = 0;
 
   private gameTabs: string = "inventory";
 
@@ -47,6 +47,7 @@ export class GamePage implements OnInit, AfterViewInit {
       this.inventory = eventData[0].inventory;
       this.money = eventData[0].money;
       this.roundCosts = this.roundCosts + eventData[0].moneyToSpend;
+      console.log(`roundCosts: ${this.roundCosts}`);
       this.isLoadedSavegame = false;
     });
 
