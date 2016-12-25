@@ -147,6 +147,7 @@ export class InventoryComponent implements OnInit {
       console.warn(`Inventory: Probably new savegame: Inventory is empty, has no length: ${error}`);
       //console.log(this.productInventory);
       this.productInventory = [];
+      this.events.publish('inventory:update', {inventory: this.productInventory});
     }
   }
 

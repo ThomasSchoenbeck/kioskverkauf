@@ -160,7 +160,7 @@ export class FinancesComponent implements OnInit {
     // all buyers - buyers of product 1 - buyers of product 2 * 22-66% = buyers of product 3
     let buyersOfProduct3Percentage = (Math.floor(Math.random() * 45 + 22) / 100);
     let buyersOfProduct3 = (this.allBuyers - buyersOfProduct1 - buyersOfProduct2) * buyersOfProduct3Percentage;
-    console.log(`buyersOfProduct3: ${buyersOfProduct3}, buyersOfProduct3Percentage: ${buyersOfProduct3Percentage}`);
+    console.log(`buyersOfProduct3: ${buyersOfProduct3}, buyersOfProduct3Percentage: ${buyersOfProduct3Percentage}, allBuyers: ${this.allBuyers}, buyersOfProduct1: ${buyersOfProduct1}, buyersOfProduct2: ${buyersOfProduct2}`);
 
     console.log(`all real buyers: ${buyersOfProduct1 + buyersOfProduct2 + buyersOfProduct3};`);
   }

@@ -4,14 +4,17 @@
   </ion-card-header>
 
   <ion-list>
-    <div *ngFor="let slot of slots">
-      <button ion-item (click)="selectSaveSlot(slot)">
+    <div ion-item *ngFor="let slot of slots">
+      <button (click)="selectSaveSlot(slot)">
         <h2>{{slot.name}}</h2>
-        <p *ngIf="!slot.city">&lt; no Game &gt;</p>
-        <p *ngIf="slot.city">City: {{slot.city}}, Shop: {{slot.shop}}, Money: {{slot.money}}</p>
+        <h3 *ngIf="!slot.city">&lt; no Game &gt;</h3>
+        <h3 *ngIf="slot.city">City: {{slot.city}}</h3>
+        <p *ngIf="slot.city">Shop: {{slot.shop}}, Money: {{slot.money}}</p>
       <!--</ion-card>-->
       </button>
-        <button ion-button item-right><ion-icon (click)="confirmDeletingSave(slot.value)" name="trash"></ion-icon></button>
+      <button (click)="confirmDeletingSave(slot.value)" ion-button item-right>
+        <ion-icon name="trash"></ion-icon>
+      </button>
     </div>
   </ion-list>
 </ion-card>
