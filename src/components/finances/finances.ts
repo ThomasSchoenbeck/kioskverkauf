@@ -16,7 +16,7 @@ export class FinancesComponent implements OnInit {
   @Input() inventory: ProductInventory[];
   private totalCosts: number;
   private earnings: number;
-  private BuyersPerBuilding: {id:number, buyers: number}[]; // cannot assign [] because it does not fit the properties
+  private BuyersPerBuilding: {id:number, buyers: number, match: number}[]; // cannot assign [] because it does not fit the properties
   private allBuyers: number = 0;
 
   constructor() {
@@ -60,7 +60,7 @@ export class FinancesComponent implements OnInit {
     this.Buildings.forEach( data => {
 
     //standard 10%
-      this.BuyersPerBuilding.push({id: data.id, buyers: data.people*0.1});
+      this.BuyersPerBuilding.push({id: data.id, buyers: data.people*0.1, match: 0});
       // this.BuyersPerBuilding[counter].id = data.id;
       // this.BuyersPerBuilding[counter].buyers = data.people * 0.1;
 
@@ -86,7 +86,7 @@ export class FinancesComponent implements OnInit {
 
 
     //   let props = ['id', 'item'];
-      
+
     // //http://stackoverflow.com/questions/32965688/comparing-two-arrays-of-objects-and-exclude-the-elements-who-match-values-into/32966051#32966051
     //   let result = this.inventory.filter( o1 => {
     //     return this.Buildings.some( o2 => {
@@ -102,6 +102,7 @@ export class FinancesComponent implements OnInit {
     //   let match = result.length;
 
       let match = matchProducts;
+
       
       if (match == 1) {
         this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.10;
@@ -128,7 +129,8 @@ export class FinancesComponent implements OnInit {
       let successratePercentage = (Math.floor(Math.random() * 11 + (-5)) / 100);
       this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * successratePercentage;
       console.log(`after Successrate(${successratePercentage}%): BuyersPerBuilding[${counter}].buyers = ${this.BuyersPerBuilding[counter].buyers}`);
-    
+
+
     //Upgrades
     
     //variance 5% + or -
@@ -158,23 +160,47 @@ export class FinancesComponent implements OnInit {
   calcEarnings() {
     // this.earnings
 
-    // all buyers * 22%-77%  = buyers of product 1 
-    let buyersOfProduct1Percentage = (Math.floor(Math.random() * 56 + 22) / 100);
-    let buyersOfProduct1 = this.allBuyers * buyersOfProduct1Percentage;
-    console.log(`buyersOfProduct1: ${buyersOfProduct1}, buyersOfProduct1Percentage: ${buyersOfProduct1Percentage}`);
+    this.BuyersPerBuilding.forEach( data => {
 
-    // all buyers - buyers of product 1  + 11-44% of product 1 buyers = potential buyers of product 2 * 44-88% = buyers of product 2 
-    let partOfBuyersOfProduct1Percentage = (Math.floor(Math.random() * 34 + 11) / 100);
-    let buyersOfProduct2Percentage = (Math.floor(Math.random() * 45 + 44) / 100);
-    let buyersOfProduct2 = (this.allBuyers - buyersOfProduct1 + (buyersOfProduct1 * partOfBuyersOfProduct1Percentage)) * buyersOfProduct2Percentage;
-    console.log(`buyersOfProduct2: ${buyersOfProduct2}, buyersOfProduct2Percentage: ${buyersOfProduct2Percentage}`);
+      let match = data.match;
 
-    // all buyers - buyers of product 1 - buyers of product 2 * 22-66% = buyers of product 3
-    let buyersOfProduct3Percentage = (Math.floor(Math.random() * 45 + 22) / 100);
-    let buyersOfProduct3 = (this.allBuyers - buyersOfProduct1 - buyersOfProduct2) * buyersOfProduct3Percentage;
-    console.log(`buyersOfProduct3: ${buyersOfProduct3}, buyersOfProduct3Percentage: ${buyersOfProduct3Percentage}, allBuyers: ${this.allBuyers}, buyersOfProduct1: ${buyersOfProduct1}, buyersOfProduct2: ${buyersOfProduct2}`);
+      let buyersOfProduct1Percentage
+        , buyersOfProduct1
+        , partOfBuyersOfProduct1Percentage
+        , buyersOfProduct2Percentage
+        , buyersOfProduct2
+        , buyersOfProduct3Percentage
+        , buyersOfProduct3
+        ;
 
-    console.log(`all real buyers: ${buyersOfProduct1 + buyersOfProduct2 + buyersOfProduct3};`);
+
+      if (match == 1 || match > 1) {
+        // all buyers * 22%-77%  = buyers of product 1 
+        buyersOfProduct1Percentage = (Math.floor(Math.random() * 56 + 22) / 100);
+        buyersOfProduct1 = data.buyers * buyersOfProduct1Percentage;
+        console.log(`Building: ${data.id}, buyersOfProduct1: ${buyersOfProduct1}, buyersOfProduct1Percentage: ${buyersOfProduct1Percentage}`);
+      }
+
+      if (match == 2 || match > 2) {
+        // all buyers - buyers of product 1  + 11-44% of product 1 buyers = potential buyers of product 2 * 44-88% = buyers of product 2 
+        partOfBuyersOfProduct1Percentage = (Math.floor(Math.random() * 34 + 11) / 100);
+        buyersOfProduct2Percentage = (Math.floor(Math.random() * 45 + 44) / 100);
+        buyersOfProduct2 = (data.buyers - buyersOfProduct1 + (buyersOfProduct1 * partOfBuyersOfProduct1Percentage)) * buyersOfProduct2Percentage;
+        console.log(`Building: ${data.id}, buyersOfProduct2: ${buyersOfProduct2}, buyersOfProduct2Percentage: ${buyersOfProduct2Percentage}`);
+      }
+
+      if (match == 3) {
+        // all buyers - buyers of product 1 - buyers of product 2 * 22-66% = buyers of product 3
+        buyersOfProduct3Percentage = (Math.floor(Math.random() * 45 + 22) / 100);
+        buyersOfProduct3 = (data.buyers - buyersOfProduct1 - buyersOfProduct2) * buyersOfProduct3Percentage;
+        console.log(`Building: ${data.id}, buyersOfProduct3: ${buyersOfProduct3}, buyersOfProduct3Percentage: ${buyersOfProduct3Percentage}, allBuyers: ${data.buyers}, buyersOfProduct1: ${buyersOfProduct1}, buyersOfProduct2: ${buyersOfProduct2}`);
+      }
+
+      console.log(`Building: ${data.id}, all real buyers: ${buyersOfProduct1 + buyersOfProduct2 + buyersOfProduct3};`);
+
+    });
+
+
   }
 
 }
