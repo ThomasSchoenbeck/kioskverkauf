@@ -51,6 +51,11 @@ export class GamePage implements OnInit, AfterViewInit {
       this.isLoadedSavegame = false;
     });
 
+    this.events.subscribe('inventory:update', (eventData) => {
+      console.log(`GamePage: (update) Inventory has changed! ${JSON.stringify(eventData)}`);
+      this.inventory = eventData[0].inventory;
+    });
+
   }
 
 

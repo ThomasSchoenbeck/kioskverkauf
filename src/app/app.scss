@@ -28,6 +28,30 @@
   margin-bottom: 35px;
 }
 
-scroll-content {
+// .app-root {
+//   overflow-y: auto;
+//   background-image: url("../assets/image/main_background.png");
+//   background-repeat: no-repeat;
+//   background-position: left top;
+//   background-size: cover;
+// }
+
+// .scroll-content { background-color: transparent; }
+// .content-ios { background-color: transparent; }
+.content-md { background-color: transparent; }
+.content-wp { background-color: transparent; }
+.card-md, .list-md { background-color: transparent; }
+// .card-ios { background-color: transparent; }
+// // .card-wp { background-color: transparent; }
+// .content-ios.outer-content { background-color: transparent !important; }
+
+
+page-home ion-content {
   overflow-y: auto;
+  background-image: url("../assets/image/main_background.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: cover;
 }
+
+ion-card-header { background-color: white; }
