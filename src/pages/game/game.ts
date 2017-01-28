@@ -5,6 +5,7 @@ import { NavController, Events, Content, NavParams } from 'ionic-angular';
 import { Savegame } from '../../models/savegame';
 import { SavegameProvider } from '../../providers/savegame';
 
+import { Product } from '../../models/products';
 import { ProductInventory } from '../../models/productInventory';
 
 @Component({
@@ -27,10 +28,28 @@ export class GamePage implements OnInit, AfterViewInit {
   // properties from InventoryComponent
   private isLoadedSavegame: boolean;
   private inventory: ProductInventory[];
+  private earnings: number;
   private money: number;
   private roundCosts: number = 0;
+  private dailyBalance: number;
 
   private gameTabs: string = "inventory";
+
+
+products = [
+    new Product( 1, 'Saft', 0.80, 1.00, 0 ),
+    new Product( 2, 'Sprudel/Wasser', 0.70, 0.90, 0),
+    new Product( 3, 'Bier', 1.00, 1.50, 0 ),
+    new Product( 4, 'Smoothy', 2.20, 2.60, 0 ),
+    new Product( 5, 'Kaffee', 0.50, 1.00, 0 ),
+    new Product( 6, 'Süßigkeiten', 0.70, 0.90, 0 ),
+    new Product( 7, 'Brötchen', 0.70, 1.00, 0 ), 
+    new Product( 8, 'Cola', 0.64, 0.89, 0 ),
+    new Product( 9, 'Eis', 0.70, 1.20, 0 ),
+    new Product( 10, 'Zeitungen', 1.55, 1.80, 0 ),
+    new Product( 11, 'Zeitschriften', 1.70, 2.10, 0 ),
+    new Product( 12, 'Salat', 2.50, 2.99, 0 ),
+  ]
 
   constructor(public navCtrl: NavController, public events: Events, private navParams: NavParams, private savegameProvider: SavegameProvider) {
     this.selectedCity = navParams.get('selectedCity').toString();
@@ -38,6 +57,7 @@ export class GamePage implements OnInit, AfterViewInit {
     this.saveSlot = navParams.get('saveSlot').toString();
     this.isLoadedSavegame = navParams.get('isLoadedSavegame');
     this.money = navParams.get('money');
+    this.gameRound = navParams.get('round');
     this.inventory = navParams.get('inventory');
 
     console.log(`GamePage: isLoadedSavegame: ${this.isLoadedSavegame}, money: ${this.money}, inventory: ${this.inventory}`);
@@ -56,8 +76,17 @@ export class GamePage implements OnInit, AfterViewInit {
       this.inventory = eventData[0].inventory;
     });
 
+    this.events.subscribe('earnings:update', (eventData) => {
+      console.log(`GamePage: (update) Earnings has changed! ${JSON.stringify(eventData)}`);
+      this.earnings = eventData[0].earnings;
+      this.dailyBalance = eventData[0].dailyBalance;      
+    });
+
   }
 
+  updateMoney() {
+    this.money = this.money + this.dailyBalance;
+  }
 
   // createSaveGame(): Promise<boolean> {
   //   console.log(`GamePage: creating savegame. City: ${this.selectedCity}, Shop: ${this.selectedShop}, Slot: ${this.saveSlot}`);
@@ -70,7 +99,12 @@ export class GamePage implements OnInit, AfterViewInit {
 
   // setPropertiesFromSavegame(): Promise<boolean> {
   setPropertiesFromSavegame() {
+    console.log(`GamePage: setPropertiesFromSavegame()`);
     this.gameRound = this.savegameProvider.savegame.round;
+    if (this.gameRound == undefined) {
+      this.gameRound = 1;
+      console.log(`GamePage: gameRound undefined, setting to ${this.gameRound}`);
+    }
     this.saveSlot = this.savegameProvider.savegame.slot;
     this.selectedCity = this.savegameProvider.savegame.city;
     this.selectedShop = this.savegameProvider.savegame.shop;
@@ -98,13 +132,23 @@ export class GamePage implements OnInit, AfterViewInit {
 
   endRound() {
     console.log(`GamePage: endRound()`);
-    // calc sellings
+    // calc sellings - done in roundSummary component
+
+    // set boolean for showing roundSummary component
+    this.roundEnd = true;
+  }
+
+  nextRound() {
+    console.log(`GamePage: nextRound()`);
+
+    this.roundCosts = 0;
+    this.updateMoney();
 
     //increase round number
     this.gameRound = this.gameRound + 1;
 
     // set boolean for showing roundSummary component
-    this.roundEnd = true;
+    this.roundEnd = false;
   }
 
   ngOnInit() {

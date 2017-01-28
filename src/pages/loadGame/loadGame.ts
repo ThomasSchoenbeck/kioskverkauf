@@ -19,6 +19,7 @@ export class LoadGamePage {
   private saveSlot: string;
   private savegame: Savegame;
   private money: number;
+  private round: number;
   private inventory: ProductInventory[];
 
   constructor(public navCtrl: NavController, public events: Events, private savegameProvider: SavegameProvider, public toastCtrl: ToastController, public alertCtrl: AlertController) {
@@ -31,6 +32,7 @@ export class LoadGamePage {
         this.selectedShop = slot[0].shop;
         this.money = slot[0].money;
         this.inventory = slot[0].inventory;
+        this.round = slot[0].round;
 
         this.confirmLoadSavegame(slot[0]);
 
@@ -99,6 +101,7 @@ export class LoadGamePage {
       saveSlot: this.saveSlot,
       money: this.money,
       inventory: this.inventory,
+      round: this.round,
       isLoadedSavegame: true
     });
   }

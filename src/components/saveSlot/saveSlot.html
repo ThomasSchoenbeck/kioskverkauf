@@ -8,7 +8,7 @@
       <button (click)="selectSaveSlot(slot)">
         <h2>{{slot.name}}</h2>
         <h3 *ngIf="!slot.city">&lt; no Game &gt;</h3>
-        <h3 *ngIf="slot.city">City: {{slot.city}}</h3>
+        <h3 *ngIf="slot.city">City: {{slot.city}} - Round: {{slot.round}}</h3>
         <p *ngIf="slot.city">Shop: {{slot.shop}}, Money: {{slot.money}}</p>
       <!--</ion-card>-->
       </button>
