@@ -75,21 +75,33 @@ export class FinancesComponent implements OnInit {
     
       let matchProducts: number = 0;
 
-      let props = ['id', 'item'];
+      for (let i = this.inventory.length; i--;) {
+        for (let j = data.products.length; j--;) {
+          if (this.inventory[i].id === data.products[j]) {
+            matchProducts++;
+          }
+        }
+      }
+
+
+
+    //   let props = ['id', 'item'];
       
-    //http://stackoverflow.com/questions/32965688/comparing-two-arrays-of-objects-and-exclude-the-elements-who-match-values-into/32966051#32966051
-      let result = this.inventory.filter( o1 => {
-        return this.Buildings.some( o2 => {
-          return o1.id === o2.id;
-        });
-      }).map( o => {
-        return props.reduce(function(item, id) {
-          item[id] = o[id];
-          return item;
-        }, {});
-      });
+    // //http://stackoverflow.com/questions/32965688/comparing-two-arrays-of-objects-and-exclude-the-elements-who-match-values-into/32966051#32966051
+    //   let result = this.inventory.filter( o1 => {
+    //     return this.Buildings.some( o2 => {
+    //       return o1.id === o2.id;
+    //     });
+    //   }).map( o => {
+    //     return props.reduce(function(item, id) {
+    //       item[id] = o[id];
+    //       return item;
+    //     }, {});
+    //   });
       
-      let match = result.length;
+    //   let match = result.length;
+
+      let match = matchProducts;
       
       if (match == 1) {
         this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.10;
