@@ -197,10 +197,11 @@ export class InventoryComponent implements OnInit {
           if (this.productInventory[productIndex] != undefined && this.productInventory[productIndex].id == data.productId) {
             console.log(`Inventory: checkout(): product found in savegame inventory.`);
             this.productInventory[productIndex].amount = this.productInventory[productIndex].amount + data.amount;
+            this.productInventory[productIndex].newIn = data.amount;
           } else {
             console.log(`Inventory: checkout(): product not in savegame inventory. pushing (${data.productId}|${data.amount})`);
             // console.log(this.productInventory);
-            this.productInventory.push({ id: data.productId, amount: data.amount});
+            this.productInventory.push({ id: data.productId, amount: data.amount, newIn: data.amount});
             // console.log(`pushed!`);
           }
           this.products[productIndex].amount = this.products[productIndex].amount + data.amount;

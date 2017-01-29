@@ -8,23 +8,23 @@ import { HomePage } from '../pages/home/home';
 
 @Component({
   // template: `<ion-nav [root]="rootPage"></ion-nav>`
-  template: `
-<ion-menu [content]="content">
+  
+// <ion-menu [content]="content">
 
-  <ion-toolbar>
-    <ion-title>Pages</ion-title>
-  </ion-toolbar>
+//   <ion-toolbar>
+//     <ion-title>Pages</ion-title>
+//   </ion-toolbar>
 
-  <ion-content>
-    <ion-list class="listOfPages">
-      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
-  </ion-content>
+//   <ion-content>
+//     <ion-list class="listOfPages">
+//       <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
+//         {{p.title}}
+//       </button>
+//     </ion-list>
+//   </ion-content>
 
-</ion-menu>
-
+// </ion-menu>
+template: `
 <ion-nav id="nav" [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>`
 })
 export class MyApp implements OnInit {

@@ -147,6 +147,10 @@ products = [
     //increase round number
     this.gameRound = this.gameRound + 1;
 
+    this.inventory.forEach( data => {
+      data.newIn = 0;
+    });
+
     // set boolean for showing roundSummary component
     this.roundEnd = false;
   }
