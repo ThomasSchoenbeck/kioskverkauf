@@ -20,7 +20,7 @@ export class RoundSummaryComponent implements OnInit {
   private totalCosts: number;
   private earnings: number;
   private dailyBalance: number;
-  private BuyersPerBuilding: {id:number, buyers: number, match: number}[]; // cannot assign [] because it does not fit the properties
+  private BuyersPerBuilding: { id:number, buyers: number, match: number, product: number[] }[]; // cannot assign [] because it does not fit the properties
   private allBuyers: number = 0;
   private sellings: {productId: number, productName: string, stock: number, newIn: number, amountSold: number, amountEarned: number}[];
 
@@ -77,7 +77,7 @@ Buildings = [
     this.Buildings.forEach( data => {
 
     //standard 10%
-      this.BuyersPerBuilding.push({id: data.id, buyers: data.people*0.1, match: 0});
+      this.BuyersPerBuilding.push({id: data.id, buyers: data.people*0.1, match: 0, product: []});
       // this.BuyersPerBuilding[counter].id = data.id;
       // this.BuyersPerBuilding[counter].buyers = data.people * 0.1;
 
@@ -95,6 +95,7 @@ Buildings = [
       for (let i = this.inventory.length; i--;) {
         for (let j = data.products.length; j--;) {
           if (this.inventory[i].id === data.products[j]) {
+            this.BuyersPerBuilding[counter].product.push(data.products[j]);
             matchProducts++;
           }
         }
@@ -122,13 +123,13 @@ Buildings = [
 
       
       if (match == 1) {
-        this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.10;
+        this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.15;
       } else if (match == 2) {
-        this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.20;
-      } else if (match == 3) {
         this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.30;
+      } else if (match == 3) {
+        this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.45;
       } else if (match == 4) {
-        this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.40;
+        this.BuyersPerBuilding[counter].buyers = this.BuyersPerBuilding[counter].buyers + data.people * 0.60;
       }
       
       console.log(`after Product Match(#${match}): BuyersPerBuilding[${counter}].buyers = ${this.BuyersPerBuilding[counter].buyers}`);
@@ -202,6 +203,35 @@ Buildings = [
         , amountEarned: number = 0
         , sellingFound: boolean = false
         ;
+
+
+      for (let i = data.buyers; i--;) {
+        (i > 50) ? i=50 : console.log(`i is smaller than 50. has not been changed`);
+        let rand = data.product[Math.floor(Math.random() * data.product.length)];
+        console.log(`random selected number is: ${rand}`);
+
+        if (rand == 1) {
+          buyersOfProduct1 = buyersOfProduct1 + 1
+        } else if (rand == 2) {
+          buyersOfProduct2 = buyersOfProduct2 + 1
+        } else if (rand == 3) {
+          buyersOfProduct3 = buyersOfProduct3 + 1
+        } else if (rand == 4) {
+          buyersOfProduct4 = buyersOfProduct4 + 1
+        }
+      }
+
+      //Need to know stock of each product id
+      //calculate maxBuyers
+      //remove amount from inventory
+      //calculate earnings
+      //is there a way to do this without a lot of loops?
+
+
+      //use random to select one of the matching products for buying
+
+      //increase the chance to sell more than one product with a match bigger than 1
+
 
 
       if (match == 1 || match > 1) {
