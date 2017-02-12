@@ -1,7 +1,7 @@
 ion-content {
   overflow-y: auto;
   background-image: url("../assets/image/main_background.png");
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: -200px top;
   background-size: cover;
 }
@@ -9,7 +9,7 @@ ion-content {
 .content-ios.outer-content {
   overflow-y: auto;
   background-image: url("../assets/image/main_background.png");
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: -200px top;
   background-size: cover;
 }

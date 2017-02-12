@@ -64,22 +64,22 @@ products = [
 
     this.events.subscribe('inventory:changed', (eventData) => {
       console.log(`GamePage: Inventory has changed! ${JSON.stringify(eventData)}`);
-      this.inventory = eventData[0].inventory;
-      this.money = eventData[0].money;
-      this.roundCosts = this.roundCosts + eventData[0].moneyToSpend;
+      this.inventory = eventData.inventory;
+      this.money = eventData.money;
+      this.roundCosts = this.roundCosts + eventData.moneyToSpend;
       console.log(`roundCosts: ${this.roundCosts}`);
       this.isLoadedSavegame = false;
     });
 
     this.events.subscribe('inventory:update', (eventData) => {
       console.log(`GamePage: (update) Inventory has changed! ${JSON.stringify(eventData)}`);
-      this.inventory = eventData[0].inventory;
+      this.inventory = eventData.inventory;
     });
 
     this.events.subscribe('earnings:update', (eventData) => {
       console.log(`GamePage: (update) Earnings has changed! ${JSON.stringify(eventData)}`);
-      this.earnings = eventData[0].earnings;
-      this.dailyBalance = eventData[0].dailyBalance;      
+      this.earnings = eventData.earnings;
+      this.dailyBalance = eventData.dailyBalance;      
     });
 
   }

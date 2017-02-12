@@ -7,7 +7,6 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-// import { ListPage } from '../pages/list/list';
 import { GamePage } from '../pages/game/game';
 import { PreGamePage } from '../pages/preGame/preGame';
 import { LoadGamePage } from '../pages/loadGame/loadGame';
@@ -34,7 +33,6 @@ import { SavegameProvider } from '../providers/savegame';
     ContactPage,
     HomePage,
     TabsPage,
-    // ListPage,
     GamePage,
     PreGamePage,
     LoadGamePage,
@@ -59,7 +57,6 @@ import { SavegameProvider } from '../providers/savegame';
     ContactPage,
     HomePage,
     TabsPage,
-    // ListPage,
     GamePage,
     PreGamePage,
     LoadGamePage,

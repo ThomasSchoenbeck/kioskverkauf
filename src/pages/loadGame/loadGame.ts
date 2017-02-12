@@ -25,26 +25,20 @@ export class LoadGamePage {
   constructor(public navCtrl: NavController, public events: Events, private savegameProvider: SavegameProvider, public toastCtrl: ToastController, public alertCtrl: AlertController) {
 
     this.events.subscribe('saveSlot:selected', slot => {
-      if (slot[0].filled) {
-        console.log(`LoadGamePage: Saveslot ${slot[0].value} has been selected!`);
-        this.saveSlot = slot[0].value;
-        this.selectedCity = slot[0].city;
-        this.selectedShop = slot[0].shop;
-        this.money = slot[0].money;
-        this.inventory = slot[0].inventory;
-        this.round = slot[0].round;
+      if (slot.filled) {
+        console.log(`LoadGamePage: Saveslot ${slot.value} has been selected!`);
+        this.saveSlot = slot.value;
+        this.selectedCity = slot.city;
+        this.selectedShop = slot.shop;
+        this.money = slot.money;
+        this.inventory = slot.inventory;
+        this.round = slot.round;
 
-        this.confirmLoadSavegame(slot[0]);
-
-        // this.savegameProvider.activateSavegame(slot[0].value).then( () => {
-        //   // success
-        //   console.log(`LoadGamePage: subscribing to activate save game.`);
-        //   this.goToGamePage()
-        // });
+        this.confirmLoadSavegame(slot);
 
       } else {
-        console.log(`LoadGamePage: Slot ${slot[0].value} is empty. Do nothing!`);
-        this.presentToast(slot[0].value);
+        console.log(`LoadGamePage: Slot ${slot.value} is empty. Do nothing!`);
+        this.presentToast(slot.value);
       }
     });
 
@@ -85,13 +79,6 @@ export class LoadGamePage {
     });
     confirm.present();
   }
-
-  // loadSaveGame():Promise<boolean> {
-  //   return this.savegameProvider.getSavegame(this.saveSlot).then(data => {
-  //     this.savegame = data;
-  //     // return true;
-  //   });
-  // }
 
   goToGamePage() {
     console.log(`LoadGamePage: navigating to GamePage!`);
