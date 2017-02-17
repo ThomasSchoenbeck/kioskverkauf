@@ -36,19 +36,19 @@ export class GamePage implements OnInit, AfterViewInit {
   private gameTabs: string = "inventory";
 
 
-products = [
-    new Product( 1, 'Saft', 0.80, 1.00, 0 ),
-    new Product( 2, 'Sprudel/Wasser', 0.70, 0.90, 0),
-    new Product( 3, 'Bier', 1.00, 1.50, 0 ),
-    new Product( 4, 'Smoothy', 2.10, 2.60, 0 ),
-    new Product( 5, 'Kaffee', 0.50, 1.00, 0 ),
-    new Product( 6, 'Süßigkeiten', 0.60, 0.90, 0 ),
-    new Product( 7, 'Brötchen', 0.70, 1.00, 0 ), 
-    new Product( 8, 'Cola', 0.64, 0.89, 0 ),
-    new Product( 9, 'Eis', 0.70, 1.20, 0 ),
-    new Product( 10, 'Zeitungen', 1.55, 1.80, 0 ),
-    new Product( 11, 'Zeitschriften', 1.70, 2.10, 0 ),
-    new Product( 12, 'Salat', 2.50, 2.99, 0 ),
+  products = [
+    new Product( 1, 'Saft', 0.80, 1.00, 0, 0 ),
+    new Product( 2, 'Sprudel/Wasser', 0.70, 0.90, 0, 0),
+    new Product( 3, 'Bier', 1.00, 1.50, 0, 0 ),
+    new Product( 4, 'Smoothy', 2.10, 2.60, 0, 0 ),
+    new Product( 5, 'Kaffee', 0.50, 1.00, 0, 0 ),
+    new Product( 6, 'Süßigkeiten', 0.60, 0.90, 0, 0 ),
+    new Product( 7, 'Brötchen', 0.70, 1.00, 0, 0 ), 
+    new Product( 8, 'Cola', 0.64, 0.89, 0, 0 ),
+    new Product( 9, 'Eis', 0.70, 1.20, 0, 0 ),
+    new Product( 10, 'Zeitungen', 1.55, 1.80, 0, 0 ),
+    new Product( 11, 'Zeitschriften', 1.70, 2.10, 0, 0 ),
+    new Product( 12, 'Salat', 2.50, 2.99, 0, 0 ),
   ]
 
   constructor(public navCtrl: NavController, public events: Events, private navParams: NavParams, private savegameProvider: SavegameProvider) {

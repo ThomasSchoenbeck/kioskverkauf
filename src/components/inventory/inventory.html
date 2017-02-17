@@ -7,24 +7,32 @@
   </ion-list-header>
 
   <ion-item *ngFor="let product of products">
-    {{product.name}} - {{product.amount}}
-    <ion-buttons text-center item-right>
+    <!--{{product.name}} - {{product.amount}}-->
+    <!--<ion-buttons text-center item-right>
       <button ion-button small (click)="calcMoneyToSpend(12,product)">12</button>
       <button ion-button small (click)="calcMoneyToSpend(24,product)">24</button>
       <button ion-button small (click)="calcMoneyToSpend(48,product)">48</button>
-    </ion-buttons>
+    </ion-buttons>-->
+
+    <ion-range (ionChange)="calcMoneyToSpend(product.newIn, product)" [min]="0" max="300" [(ngModel)]="product.newIn" pin="true" color="secondary">
+      <ion-label range-left>{{product.name}} - {{product.newIn}}</ion-label>
+      <ion-label range-left>0</ion-label>
+      <ion-label range-right>300</ion-label>
+    </ion-range>
+
+
   </ion-item>
 
   <ion-item></ion-item>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-buttons left>
+    <!--<ion-buttons left>
+    </ion-buttons>-->
+    <ion-title style="padding-left: 15px">Checkout: {{moneyToSpend}}</ion-title>
+    <ion-buttons right style="margin-right: 25px">
       <button ion-button round color="dark" (click)="confirmBuying()">Buy</button>
-    </ion-buttons>
-    <ion-title>Checkout: {{moneyToSpend}}</ion-title>
-    <ion-buttons right style="padding-right: 15px">
-      <button ion-button round color="danger" (click)="resetCheckout()">reset</button>
+      <button ion-button round color="danger" (click)="resetCheckoutAlert()">reset</button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

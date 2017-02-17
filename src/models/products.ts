@@ -4,7 +4,8 @@ export class Product {
     public name: string,
     public price_buy: number,
     public price_sell: number,
-    public amount: number
+    public amount: number,
+    public newIn: number
     // public 
   ) { }
 }

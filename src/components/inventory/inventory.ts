@@ -30,62 +30,90 @@ export class InventoryComponent implements OnInit {
   // some products can only be bought and sold when a specific upgrade is available
   // [locked, unlocked] attribute for the products that need first a upgrade to unlock them
   products = [
-    new Product( 1, 'Saft', 0.80, 1.00, 0 ),
-    new Product( 2, 'Sprudel/Wasser', 0.70, 0.90, 0),
-    new Product( 3, 'Bier', 1.00, 1.50, 0 ),
-    new Product( 4, 'Smoothy', 2.10, 2.60, 0 ),
-    new Product( 5, 'Kaffee', 0.50, 1.00, 0 ),
-    new Product( 6, 'Süßigkeiten', 0.60, 0.90, 0 ),
-    new Product( 7, 'Brötchen', 0.70, 1.00, 0 ), 
-    new Product( 8, 'Cola', 0.64, 0.89, 0 ),
-    new Product( 9, 'Eis', 0.70, 1.20, 0 ),
-    new Product( 10, 'Zeitungen', 1.55, 1.80, 0 ),
-    new Product( 11, 'Zeitschriften', 1.70, 2.10, 0 ),
-    new Product( 12, 'Salat', 2.50, 2.99, 0 ),
+    new Product( 1, 'Saft', 0.80, 1.00, 0, 0 ),
+    new Product( 2, 'Sprudel/Wasser', 0.70, 0.90, 0, 0),
+    new Product( 3, 'Bier', 1.00, 1.50, 0, 0 ),
+    new Product( 4, 'Smoothy', 2.10, 2.60, 0, 0 ),
+    new Product( 5, 'Kaffee', 0.50, 1.00, 0, 0 ),
+    new Product( 6, 'Süßigkeiten', 0.60, 0.90, 0, 0 ),
+    new Product( 7, 'Brötchen', 0.70, 1.00, 0, 0 ), 
+    new Product( 8, 'Cola', 0.64, 0.89, 0, 0 ),
+    new Product( 9, 'Eis', 0.70, 1.20, 0, 0 ),
+    new Product( 10, 'Zeitungen', 1.55, 1.80, 0, 0 ),
+    new Product( 11, 'Zeitschriften', 1.70, 2.10, 0, 0 ),
+    new Product( 12, 'Salat', 2.50, 2.99, 0, 0 ),
   ]
 
-  calcMoneyToSpend(amount, product: Product) {
-    let price: number = amount * product.price_buy; 
-    console.log(`Inventory: calcMoneyToSpend(): for product: ${product.name}, old amount: ${product.amount}, new amount: ${product.amount + amount}, price: ${price}`)
-    let index = this.productInCheckout.indexOf(product.id);
-    if (index > -1) {
-      console.log(`Inventory: calcMoneyToSpend(): product(${product.id}) already in the array.`);
-      this.checkoutValue[index].amount = +this.checkoutValue[index].amount + amount; 
-      this.checkoutValue[index].price = Math.round((+this.checkoutValue[index].price + price) * 100) / 100; 
+  calcMoneyToSpend(newIn, product: Product) {
+
+console.log(JSON.stringify(newIn));
+    if (newIn < product.amount) {
+      product.newIn = product.amount;
     } else {
-      this.productInCheckout.push(product.id);
-      this.checkoutValue.push({productId: product.id, amount: amount, price: price});
-    }
 
-    console.log(this.productInventoryIds);
-    index = this.productInventoryIds.indexOf(product.id);
-    if (index == -1) {
-      console.log(`Inventory: calcMoneyToSpend(): index of productInventoryIds = ${index}`);
+      if (newIn !== product.amount) {
 
-      let productIndex;
+        let amount = newIn - product.amount; // do not calculate stock into checkout
 
-      for (let i=this.products.length; i--; ) {
-        ///console.log(`i(${i}) = id: ${this.products[i].id} compared to product.id(${product.id})`);
-        if (this.products[i].id === product.id) {
-          productIndex = i;
-          break;
+        let price: number = amount * product.price_buy; 
+        console.log(`amount: ${amount}, newIn: ${product.newIn}`);
+        console.log(`Inventory: calcMoneyToSpend(): for product: ${product.name}, old amount: ${product.amount}, new amount: ${product.amount + amount}, price: ${price}`)
+        let index = this.productInCheckout.indexOf(product.id);
+        if (index > -1) {
+          console.log(`Inventory: calcMoneyToSpend(): product(${product.id}) already in the array.`);
+          // this.checkoutValue[index].amount = +this.checkoutValue[index].amount + amount; 
+          // this.checkoutValue[index].price = Math.round((+this.checkoutValue[index].price + price) * 100) / 100; 
+          this.checkoutValue[index].amount = amount; 
+          this.checkoutValue[index].price = Math.round((price * 100) / 100); 
+        } else {
+          this.productInCheckout.push(product.id);
+          this.checkoutValue.push({productId: product.id, amount: amount, price: price});
         }
+
+        console.log(this.productInventoryIds);
+        index = this.productInventoryIds.indexOf(product.id);
+        if (index == -1) {
+          console.log(`Inventory: calcMoneyToSpend(): index of productInventoryIds = ${index}`);
+
+          let productIndex;
+
+          for (let i=this.products.length; i--; ) {
+            ///console.log(`i(${i}) = id: ${this.products[i].id} compared to product.id(${product.id})`);
+            if (this.products[i].id === product.id) {
+              productIndex = i;
+              break;
+            }
+          }
+
+          // productIndex = this.products.filter(value => {
+          //   console.log(`filter products: compare id ${value.id} to ${product.id}`);
+          //   value.id === product.id;
+          // });
+
+          console.log(`index in products is ${productIndex}`);
+      
+          this.productInventoryIds[productIndex] = product.id;
+
+        }
+
+        //console.log(this.checkoutValue);
+        console.log(`Inventory: calcMoneyToSpend(): moneyToSpend: ${this.moneyToSpend} + price: ${price}`);
+        // this.moneyToSpend = Math.round((this.moneyToSpend + price) * 100) / 100;
+        this.refreshMoneyToSpend();
       }
-
-      // productIndex = this.products.filter(value => {
-      //   console.log(`filter products: compare id ${value.id} to ${product.id}`);
-      //   value.id === product.id;
-      // });
-
-      console.log(`index in products is ${productIndex}`);
-  
-      this.productInventoryIds[productIndex] = product.id;
-
     }
+  }
 
-    //console.log(this.checkoutValue);
-    console.log(`Inventory: calcMoneyToSpend(): moneyToSpend: ${this.moneyToSpend} + price: ${price}`);
-    this.moneyToSpend = Math.round((this.moneyToSpend + price) * 100) / 100;
+  refreshMoneyToSpend() {
+    console.log(this.checkoutValue);
+
+    this.moneyToSpend = 0;
+
+    this.checkoutValue.forEach( data => {
+      this.moneyToSpend = this.moneyToSpend + data.price;
+    });
+
+    this.moneyToSpend = Math.round(this.moneyToSpend * 100) / 100;
   }
 
   // loadInventoryFromSavegame() {
@@ -140,6 +168,8 @@ export class InventoryComponent implements OnInit {
           //console.log(`productIndex = ${productIndex}, this.products: ${JSON.stringify(this.products)}`);
 
           this.products[productIndex].amount = data.amount;
+          console.log(`product still has stock: ${data.newIn} or amount: ${data.amount}`);
+          this.products[productIndex].newIn = data.amount;
           this.productInventoryIds.push(data.id);
         });
       }
@@ -156,7 +186,7 @@ export class InventoryComponent implements OnInit {
     console.log(`Inventory: loadMoneyFromCurrentGame(): money: ${this.money}`);
   }
 
-  resetCheckout() {
+  resetCheckoutAlert() {
      let alert = this.alertCtrl.create({
       title: 'Delete shopping cart?',
       message: 'Do you really want to empty your shopping cart again?',
@@ -180,6 +210,12 @@ export class InventoryComponent implements OnInit {
       ]
     });
     alert.present();
+  }
+
+  resetCheckout() {
+    this.checkoutValue = [];
+    this.moneyToSpend = 0;
+    this.productInCheckout = [];
   }
 
 
@@ -212,12 +248,9 @@ export class InventoryComponent implements OnInit {
       console.log(`Inventory: checkout(): spending ${this.moneyToSpend} from ${this.money} = ${this.money - this.moneyToSpend}`);
       this.money = Math.round((this.money - this.moneyToSpend) * 100) / 100;
 
-      // this.checkoutValue = [];
-      // this.moneyToSpend = 0;
-      // this.productInCheckout = [];
-      this.resetCheckout();
-
       this.saveProgress();
+
+      this.resetCheckout();
 
     } else {
       console.log(`Inventory: checkout(): nothing to buy selected.`);
